@@ -1,3 +1,4 @@
+# RedHat RPM package spec file
 Summary: helper scripts for dealing with nVentory
 Name: nv_helpers
 Version: 1.1

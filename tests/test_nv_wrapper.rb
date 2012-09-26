@@ -1,4 +1,4 @@
-require './nv_helpers'
+require 'nv_helpers'
 require 'test/unit'
 
 class TestNvWrapper < Test::Unit::TestCase

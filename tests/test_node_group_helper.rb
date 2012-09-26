@@ -1,5 +1,5 @@
-$:.unshift File.join(File.dirname(__FILE__),'..')
-require 'nv_helpers/node_group_helper'
+#$:.unshift File.join(File.dirname(__FILE__),'..')
+require 'nv_helpers' #/node_group_helper
 require 'test/unit'
 
 class TestNodeGroupHelper < Test::Unit::TestCase
