@@ -1,15 +1,16 @@
-require 'tempfile'
-
-#VERSION = "1.0.1"
-BUILDROOT = '/var/tmp/nv_helpers-buildroot/'
+# RedHat RPM tasks for rake
 
 desc 'Build an etch client RPM on a Red Hat box'
 task :redhat => [:redhatprep, :rpm]
+
+
 desc 'Prep a Red Hat box for building an RPM'
 task :redhatprep do
   # Install the package which contains the rpmbuild command
   system('rpm --quiet -q rpm-build || sudo yum install rpm-build')
 end
+
+
 desc 'Build an etch client RPM'
 task :rpm do
   #
