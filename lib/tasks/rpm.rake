@@ -1,7 +1,6 @@
 # RedHat RPM tasks for rake
 
 BUILD_VERSION = NvHelpers::VERSION
-BUILD_RELEASE = NvHelpers::VERSION.split('.').last
 BUILDROOT = '/var/tmp/nv_helpers-buildroot/'
 
 desc 'Build an etch client RPM on a Red Hat box'
@@ -37,13 +36,9 @@ task :rpm do
   #
   spec = Tempfile.new('nv_helpersrpm')
   IO.foreach('nv_helpers.spec') do |line|
-    # TODO: does the RPM Version only include first two numbers? also see 
-    # Release number
+    # add the NvHelpers::VERSION constant to rpm spec file
     line.gsub!(/^Version: .*$/,
                "Version: #{BUILD_VERSION}")
-    # TODO: use last digit of version as Release number?
-    line.gsub!(/^Release: .*$/,
-               "Release: #{BUILD_RELEASE}")
     spec.puts(line)
   end
   spec.close
@@ -52,7 +47,7 @@ task :rpm do
   # Build the package
   #
 
-  system("rpmbuild -bb --buildroot #{BUILDROOT} #{spec.path}")
+  system("rpmbuild", "-bb", "--buildroot #{BUILDROOT}", spec.path) or warn("rpm.rake: Unable to execute rpmbuild! ERROR: #{$?}")
 
   #
   # Cleanup
