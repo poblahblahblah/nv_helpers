@@ -1,5 +1,9 @@
 # RedHat RPM tasks for rake
 
+BUILD_VERSION = NvHelpers::VERSION
+BUILD_RELEASE = NvHelpers::VERSION.split('.').last
+BUILDROOT = '/var/tmp/nv_helpers-buildroot/'
+
 desc 'Build an etch client RPM on a Red Hat box'
 task :redhat => [:redhatprep, :rpm]
 
@@ -20,17 +24,26 @@ task :rpm do
   rm_rf(BUILDROOT)
   libdir = File.join(BUILDROOT, 'usr', 'lib', 'ruby', 'site_ruby', '1.8', 'nv_helpers')
   mkdir_p(libdir)
-  cp('nv_helpers/node_group_helper.rb', libdir)
-  cp('nv_helpers/graffiti_helper.rb', libdir)
-  cp('nv_helpers/nv_wrapper.rb', libdir)
-  cp('nv_helpers.rb', File.dirname(libdir))
+
+  # copy files from lib/ up into nv_helpers level for ruby site lib
+  (Dir.glob("lib/**/*rb") - ["lib/nv_helpers.rb"]).each do |f|
+    cp(f, libdir)
+  end
+  # do this file separately - it loads the others
+  cp('lib/nv_helpers.rb', File.dirname(libdir))
 
   #
   # Prep spec file
   #
   spec = Tempfile.new('nv_helpersrpm')
   IO.foreach('nv_helpers.spec') do |line|
-#    line.sub!('%VER%', VERSION)
+    # TODO: does the RPM Version only include first two numbers? also see 
+    # Release number
+    line.gsub!(/^Version: .*$/,
+               "Version: #{BUILD_VERSION}")
+    # TODO: use last digit of version as Release number?
+    line.gsub!(/^Release: .*$/,
+               "Release: #{BUILD_RELEASE}")
     spec.puts(line)
   end
   spec.close
@@ -44,6 +57,5 @@ task :rpm do
   #
   # Cleanup
   #
-
   rm_rf(BUILDROOT)
 end
