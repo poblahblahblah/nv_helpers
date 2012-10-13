@@ -1,7 +1,7 @@
 # RedHat RPM tasks for rake
 
 BUILD_VERSION = NvHelpers::VERSION
-BUILDROOT = '/var/tmp/nv_helpers-buildroot/'
+BUILDROOT = '/tmp/nv_helpers-buildroot/'
 
 desc 'Build an etch client RPM on a Red Hat box'
 task :redhat => [:redhatprep, :rpm]
@@ -47,7 +47,7 @@ task :rpm do
   # Build the package
   #
 
-  system("rpmbuild", "-bb", "--buildroot #{BUILDROOT}", spec.path) or warn("rpm.rake: Unable to execute rpmbuild! ERROR: #{$?}")
+  system("rpmbuild -bb --buildroot #{BUILDROOT} #{spec.path}") or warn("rpm.rake: Unable to execute rpmbuild! ERROR: #{$?}")
 
   #
   # Cleanup
