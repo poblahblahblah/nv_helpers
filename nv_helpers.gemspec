@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary     = %q{Helpers for dealing with nVentory}
   s.description = %q{This package includes helper scripts for dealing with nVentory}
 
-  # probably don't want to push here
+  # probably don't want to push to rubyforge
   #s.rubyforge_project = "nv_helpers"
 
   NV_IGNORE_FILES = %w{.rvmrc} unless defined?(NV_IGNORE_FILES)
@@ -20,6 +20,8 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
+
+  s.add_development_dependency "rake"
 
   s.add_runtime_dependency "nventory-client"
 end

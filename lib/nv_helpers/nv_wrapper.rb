@@ -10,7 +10,7 @@ module NvHelpers
       # nventory client config hash uses symbol. Make sure we convert all
       # the keys to symbols
       @nv_config = nv_config.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
-      @nv_config[:server] ||= "http://nventory.corp.eharmony.com"
+      @nv_config[:server] ||= "http://nventory"
       if @nv_config[:server] !~ /^http/
         @nv_config[:server]  = "http://" + @nv_config[:server] 
       end 
@@ -19,7 +19,7 @@ module NvHelpers
 
       @nvclient = NVentory::Client.new(@nv_config)
     end
-    
+
     def set_nv_server_url(url)
       @nv_config[:server] = url
       @nvclient = NVentory::Client.new(@nv_config)
@@ -32,7 +32,7 @@ module NvHelpers
     def delete_objects(objecttypes, data)
       @nvclient.delete_objects(objecttypes, data, @username, @password)
     end
-  
+
     def delete_nodes(data)
       delete_objects('nodes', data)
     end

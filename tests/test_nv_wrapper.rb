@@ -9,8 +9,11 @@ class TestNvWrapper < Test::Unit::TestCase
     assert_nothing_raised{ NvHelpers::NvWrapper.new({'server' => 'nventory.dev.corp.eharmony.com', 'username' => 'ddao'}) }
     assert_nothing_raised{ NvHelpers::NvWrapper.new({'server' => 'nventory.dev.corp.eharmony.com', 'username' => 'ddao', 'password' => 'secret'}) }
   end
+
   def test_get_nodes
-    nv_helper =  NvHelpers::NvWrapper.new
+    # NOTE: presumes objects that exist in the eharmony Production server ...
+    nv_helper = NvHelpers::NvWrapper.new({'server' => 'nventory.corp.eharmony.com'})
+
     result = nv_helper.get_nodes({:get => {:name => "prod.dc1.eharmony.com", 'network_interfaces[name]' => "eth0"},
                                         :includes => ['network_interfaces[ip_addresses]']})
     assert(!result.empty?)
